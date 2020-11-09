@@ -22,6 +22,11 @@ namespace Project_2__Dimensions_Data.Controllers
         {
             return View();
         }
+        public IActionResult Data()
+        {
+            ViewData["Message"] = "People-First Manufacturing Industry Organistaion ";
+            return View();
+        }
 
         public IActionResult Privacy()
         {
