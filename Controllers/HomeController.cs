@@ -24,7 +24,7 @@ namespace Project_2__Dimensions_Data.Controllers
         }
         public IActionResult Data()
         {
-            ViewData["Message"] = "People-First Manufacturing Industry Organistaion ";
+            ViewData["Message"] = "People-First Manufacturing Industry Organisation ";
             return View();
         }
 
