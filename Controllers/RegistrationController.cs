@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Project_2__Dimensions_Data.Controllers
 {
-    public class HomeController1 : Controller
+    public class RegistrationController : Controller
     {
         public IActionResult Index()
         {
