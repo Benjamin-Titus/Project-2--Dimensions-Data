@@ -1,5 +1,3 @@
-using System;
-
 namespace Project_2__Dimensions_Data.Models
 {
     public class ErrorViewModel

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Project_2__Dimensions_Data.Models
+﻿namespace Project_2__Dimensions_Data.Models
 {
     public class Data
-    { 
+    {
         public int EmployeeId { get; set; }
         public int Age { get; set; }
         public string Attrition { get; set; }
         public string BusinessTravel { get; set; }
 
         public int DailyRate { get; set; }
-   
+
         public string Department { get; set; }
         public int DistanceFromHome { get; set; }
 
@@ -31,7 +26,7 @@ namespace Project_2__Dimensions_Data.Models
         public string MaritalStatus { get; set; }
         public int MonthlyIncome { get; set; }
         public int MonthlyRate { get; set; }
-        public int NumCompaniesWorked{ get; set; }
+        public int NumCompaniesWorked { get; set; }
         public string Over18 { get; set; }
         public string OverTime { get; set; }
         public int PercentSalaryHike { get; set; }
@@ -46,7 +41,7 @@ namespace Project_2__Dimensions_Data.Models
         public int YearsAtCompany { get; set; }
         public int YearsInCurrentRole { get; set; }
         public int YearsSinceLastPromotion { get; set; }
-        public int YearsWithCurrManager{ get; set; }
+        public int YearsWithCurrManager { get; set; }
 
     }
 }
