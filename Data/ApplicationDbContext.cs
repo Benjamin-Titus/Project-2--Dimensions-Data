@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Project_2__Dimensions_Data.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class Project_2_Dimensions_DataDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public Project_2_Dimensions_DataDbContext(DbContextOptions<Project_2_Dimensions_DataDbContext> options)
            : base(options)
         { 
         }
