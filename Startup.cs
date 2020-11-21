@@ -1,38 +1,58 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Project_2__Dimensions_Data.Data;
+using Project_2__Dimensions_Data.Models;
+using Project_2__Dimensions_Data.Services;
+using System;
+[assembly: HostingStartup(typeof(Project_2__Dimensions_Data.Data))]
+
 
 namespace Project_2__Dimensions_Data
 {
-    public class Startup
+    public class StartuIdentityHostongStartup : IHostingStartup
     {
-        public Startup(IConfiguration configuration)
+        public void Configure(IWebHostBuilder builder)
         {
-            Configuration = configuration;
-        }
+            builder.ConfigureServices((context, services) => {
+                services.AddDbContext<Project_2_Dimensions_DataDbContext>(options =>
+                    options.UseSqlServer(
+                        context.Configuration.GetConnectionString("DefaultConnection")));
 
-        public IConfiguration Configuration { get; }
+                //Role Identity//
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddDefaultUI()
+                    .AddEntityFrameworkStores<Project_2_Dimensions_DataDbContext>();
+                .AddDefaultTokenProviders();
+
+
+                services.AddControllersWithViews();
+                services.AddRazorPages();
+
+                //Database//
+                services.AddDbContext<Project_2_Dimensions_DataDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Project_2_Dimensions_DataDbContextConnection")));
+
+                //Role limitations policies
+                services.AddAuthorization(options => {
+                    options.AddPolicy("writeonlypolicy", builder => builder.RequireRole("Admin"));
+                    options.AddPolicy("usermanagepolicy", builder => builder.RequireRole("Admin"));
+                    options.AddPolicy("Readonlypolicy", builder => builder.RequireRole("Employee", "Admin"));
+                });
+                //Dealing with emails//
+                services.AddTransient<IEmailSender, EmailSender>();
+                services.Configure<AuthMessageSenderOptions>(Configuration);
+
+            });
+
+        private void AddDefaultTokenProviders()
         {
-            services.AddDbContext<Project_2_Dimensions_DataDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddDefaultUI()
-                .AddEntityFrameworkStores<Project_2_Dimensions_DataDbContext>();
-           
-
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-            
+            throw new NotImplementedException();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,7 @@
-﻿namespace Project_2__Dimensions_Data.Models
+﻿
+namespace Project_2__Dimensions_Data.Models
 {
-    public class Data
+    public partial class Data
     {
         public int EmployeeId { get; set; }
         public int Age { get; set; }
