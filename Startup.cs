@@ -1,58 +1,38 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Project_2__Dimensions_Data.Data;
-using Project_2__Dimensions_Data.Models;
-using Project_2__Dimensions_Data.Services;
-using System;
-[assembly: HostingStartup(typeof(Project_2__Dimensions_Data.Data))]
-
+using Microsoft.AspNetCore.Http;
 
 namespace Project_2__Dimensions_Data
 {
-    public class StartuIdentityHostongStartup : IHostingStartup
+    public class Startup
     {
-        public void Configure(IWebHostBuilder builder)
+        public Startup(IConfiguration configuration)
         {
-            builder.ConfigureServices((context, services) => {
-                services.AddDbContext<Project_2_Dimensions_DataDbContext>(options =>
-                    options.UseSqlServer(
-                        context.Configuration.GetConnectionString("DefaultConnection")));
+            Configuration = configuration;
+        }
 
-                //Role Identity//
+        public IConfiguration Configuration { get; }
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddDefaultUI()
-                    .AddEntityFrameworkStores<Project_2_Dimensions_DataDbContext>();
-                .AddDefaultTokenProviders();
-
-
-                services.AddControllersWithViews();
-                services.AddRazorPages();
-
-                //Database//
-                services.AddDbContext<Project_2_Dimensions_DataDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Project_2_Dimensions_DataDbContextConnection")));
-
-                //Role limitations policies
-                services.AddAuthorization(options => {
-                    options.AddPolicy("writeonlypolicy", builder => builder.RequireRole("Admin"));
-                    options.AddPolicy("usermanagepolicy", builder => builder.RequireRole("Admin"));
-                    options.AddPolicy("Readonlypolicy", builder => builder.RequireRole("Employee", "Admin"));
-                });
-                //Dealing with emails//
-                services.AddTransient<IEmailSender, EmailSender>();
-                services.Configure<AuthMessageSenderOptions>(Configuration);
-
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddAuthentication("CookieAuth").AddCookie("CookieAuth", config =>
+            {
+                config.Cookie.Name = "CookieAuth";
+                config.ExpireTimeSpan = new System.TimeSpan(1, 0, 0);
+                config.SlidingExpiration = true;
+                config.LoginPath = "/Login";
+                config.AccessDeniedPath = "/Error";
             });
 
-        private void AddDefaultTokenProviders()
-        {
-            throw new NotImplementedException();
+            string temp = Configuration["ConnectionString"];
+            services.AddMvc();
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +41,6 @@ namespace Project_2__Dimensions_Data
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -69,20 +48,22 @@ namespace Project_2__Dimensions_Data
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }

@@ -2,6 +2,10 @@
 using Microsoft.Extensions.Logging;
 using Project_2__Dimensions_Data.Models;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Project_2__Dimensions_Data.Controllers
 {
@@ -13,7 +17,6 @@ namespace Project_2__Dimensions_Data.Controllers
         {
             _logger = logger;
         }
-
         public IActionResult Index()
         {
             return View();
@@ -29,5 +32,6 @@ namespace Project_2__Dimensions_Data.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+       
     }
 }

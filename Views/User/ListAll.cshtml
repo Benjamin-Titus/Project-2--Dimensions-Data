@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Project_2__Dimensions_Data.Models.UserModel>
+
+@{ ViewData["Title"] = "ListAll"; }
+
+<h1>All Accounts</h1>
+
+<p>
+    <a asp-action="Register">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailAddress)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Username)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmailAddress)
+    </td>
+    <td>
+        @{ if (User.IsInRole("admin"))
+                            {
+            @Html.ActionLink("Details", "Details", new { Id = item.Id }) @:|
+            @Html.ActionLink("Edit", "EditAccount", new { Id = item.Id }) @:|
+            @Html.ActionLink("Delete", "Delete", new { Id = item.Id }) }
+                            if (User.IsInRole("employee"))
+                            {
+            @Html.ActionLink("Details", "Details", new { Id = item.Id }) @:|
+        } }
+    </td>
+</tr>}
+
+    </tbody>
+</table>
