@@ -9,8 +9,7 @@ namespace Project_2__Dimensions_Data.Models
 {
     public class UserModel
     {
-        [Key, Display(Name = "ID")]
-        public UserId Id;
+        public int Id { get; set; }
 
         [Required, StringLength(50), Display(Name = "Username")]
         public string Username { get; set; }
@@ -19,7 +18,7 @@ namespace Project_2__Dimensions_Data.Models
         public string EmailAddress { get; set; }
 
         [Required, StringLength(50), Display(Name = "Password required")]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
 
         public string Role { get; set; } = "User";
 

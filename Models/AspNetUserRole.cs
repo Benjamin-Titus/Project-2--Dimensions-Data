@@ -8,8 +8,6 @@ namespace Project_2__Dimensions_Data.Models
 {
     public class AspNetUserRole
     {
-        [Key, Display(Name = "ID")]
-        public UserId Id;
         public int UserId { get; set; }
         public int RoleId { get; set; }
     }
